@@ -1,0 +1,20 @@
+n 512, 0.268 GFLOP per multiply, peak 9032 GFLOP/s
+
+version         ms     GFLOP/s   % peak   max rel err   failures
+v1_naive        4.120       65.2    0.72%      9.56e-07          0
+v2_coalesced    0.528      508.2    5.63%      9.56e-07          0
+n 1024, 2.147 GFLOP per multiply, peak 9032 GFLOP/s
+
+version         ms     GFLOP/s   % peak   max rel err   failures
+v1_naive       24.893       86.3    0.96%      1.25e-06          0
+v2_coalesced    2.833      758.0    8.39%      1.25e-06          0
+n 2048, 17.180 GFLOP per multiply, peak 9032 GFLOP/s
+
+version         ms     GFLOP/s   % peak   max rel err   failures
+v1_naive      183.815       93.5    1.03%      2.37e-06          0
+v2_coalesced   22.228      772.9    8.56%      2.37e-06          0
+n 4096, 137.439 GFLOP per multiply, peak 9032 GFLOP/s
+
+version         ms     GFLOP/s   % peak   max rel err   failures
+v1_naive     1465.371       93.8    1.04%      2.92e-06          0
+v2_coalesced  208.046      660.6    7.31%      2.92e-06          0

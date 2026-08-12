@@ -10,3 +10,4 @@ struct SgemmVersion {
 };
 
 void launch_sgemm_v1(int n, const float *d_a, const float *d_b, float *d_c);
+void launch_sgemm_v2(int n, const float *d_a, const float *d_b, float *d_c);

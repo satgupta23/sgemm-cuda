@@ -4,7 +4,8 @@
 #include "reference.h"
 
 static const SgemmVersion versions[] = {
-    {"v1_naive", launch_sgemm_v1},
+    {"v1_naive", launch_sgemm_v1}, 
+    {"v2_coalesced", launch_sgemm_v2},
 };
 
 static const int version_count = (int)(sizeof(versions) / sizeof(versions[0]));
