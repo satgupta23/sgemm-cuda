@@ -1,0 +1,40 @@
+n 512, 0.268 GFLOP per multiply, peak 9032 GFLOP/s
+
+version           ms     GFLOP/s   % peak  % cuBLAS   max rel err  failures
+v1_naive         4.134        64.9    0.72%        --      9.56e-07         0
+v2_coalesced     0.555       483.9    5.36%        --      9.56e-07         0
+v3_shared        0.421       637.4    7.06%        --      9.56e-07         0
+v4_1d_tiling     0.203      1322.2   14.64%        --      9.56e-07         0
+v5_2d_tiling     0.229      1171.5   12.97%        --      9.56e-07         0
+v6_vectorized    0.152      1762.2   19.51%        --      9.56e-07         0
+cublas           0.207      1295.9   14.35%    100.0%      3.13e-07         0
+n 1024, 2.147 GFLOP per multiply, peak 9032 GFLOP/s
+
+version           ms     GFLOP/s   % peak  % cuBLAS   max rel err  failures
+v1_naive        23.674        90.7    1.00%        --      1.25e-06         0
+v2_coalesced     2.847       754.4    8.35%        --      1.25e-06         0
+v3_shared        2.234       961.4   10.64%        --      1.25e-06         0
+v4_1d_tiling     0.901      2383.3   26.39%        --      1.25e-06         0
+v5_2d_tiling     0.679      3164.3   35.04%        --      1.25e-06         0
+v6_vectorized    0.465      4617.8   51.13%        --      1.25e-06         0
+cublas           0.348      6164.7   68.26%    100.0%      2.81e-07         0
+n 2048, 17.180 GFLOP per multiply, peak 9032 GFLOP/s
+
+version           ms     GFLOP/s   % peak  % cuBLAS   max rel err  failures
+v1_naive       183.837        93.5    1.03%        --      2.37e-06         0
+v2_coalesced    22.291       770.7    8.53%        --      2.37e-06         0
+v3_shared       17.516       980.8   10.86%        --      2.37e-06         0
+v4_1d_tiling     6.845      2510.0   27.79%        --      2.37e-06         0
+v5_2d_tiling     4.761      3608.2   39.95%        --      2.37e-06         0
+v6_vectorized    2.814      6104.9   67.59%        --      2.37e-06         0
+cublas           2.321      7401.7   81.95%    100.0%      2.37e-06         0
+n 4096, 137.439 GFLOP per multiply, peak 9032 GFLOP/s
+
+version           ms     GFLOP/s   % peak  % cuBLAS   max rel err  failures
+v1_naive       1465.074        93.8    1.04%        --      2.92e-06         0
+v2_coalesced   192.067       715.6    7.92%        --      2.92e-06         0
+v3_shared      149.520       919.2   10.18%        --      2.92e-06         0
+v4_1d_tiling    58.820      2336.6   25.87%        --      2.92e-06         0
+v5_2d_tiling    44.340      3099.6   34.32%        --      2.92e-06         0
+v6_vectorized   21.576      6370.1   70.53%        --      2.92e-06         0
+cublas          19.420      7077.2   78.36%    100.0%      2.92e-06         0

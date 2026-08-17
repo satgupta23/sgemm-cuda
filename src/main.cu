@@ -4,15 +4,16 @@
 #include "reference.h"
 
 static const SgemmVersion versions[] = {
-    {"v1_naive", launch_sgemm_v1}, 
-    {"v2_coalesced", launch_sgemm_v2},
-    {"v3_shared", launch_sgemm_v3},
-    {"v4_ld_tiling", launch_sgemm_v4},
-    {"v5_2d_tiling", launch_sgemm_v5},
+    {"v1_naive", launch_sgemm_v1, 1},
+    {"v2_coalesced", launch_sgemm_v2, 1},
+    {"v3_shared", launch_sgemm_v3, 1},
+    {"v4_1d_tiling", launch_sgemm_v4, 1},
+    {"v5_2d_tiling", launch_sgemm_v5, 1},
+    {"v6_vectorized", launch_sgemm_v6, 4},
+    {"cublas", launch_cublas_sgemm, 1},
 };
 
 static const int version_count = (int)(sizeof(versions) / sizeof(versions[0]));
-
 
 static double peak_gflops(void)
 {
@@ -31,7 +32,6 @@ static double peak_gflops(void)
     if (lanes == 0) {
         return 0.0;
     }
-
     return 2.0 * lanes * prop.multiProcessorCount * clock_khz * 1e3 / 1e9;
 }
 
@@ -47,8 +47,7 @@ int main(int argc, char **argv)
     const int verification_samples = 4096;
     const double tolerance = 1e-4;
 
-    const size_t elements = (size_t)n * n;
-    const size_t bytes = elements * sizeof(float);
+    const size_t bytes = (size_t)n * n * sizeof(float);
 
     float *h_a = (float *)malloc(bytes);
     float *h_b = (float *)malloc(bytes);
@@ -57,7 +56,6 @@ int main(int argc, char **argv)
         fprintf(stderr, "host allocation failed\n");
         return EXIT_FAILURE;
     }
-
     fill_random(n, h_a, 1u);
     fill_random(n, h_b, 2u);
 
@@ -70,14 +68,24 @@ int main(int argc, char **argv)
     CUDA_CHECK(cudaMemcpy(d_a, h_a, bytes, cudaMemcpyHostToDevice));
     CUDA_CHECK(cudaMemcpy(d_b, h_b, bytes, cudaMemcpyHostToDevice));
 
+    cublas_init();
+
     const double total_flops = 2.0 * (double)n * (double)n * (double)n;
     const double peak = peak_gflops();
 
+    double cublas_gflops = 0.0;
+
     printf("n %d, %.3f GFLOP per multiply, peak %.0f GFLOP/s\n\n",
-           n, total_flops / 1e9, peak);
-    printf("version         ms     GFLOP/s   %% peak   max rel err   failures\n");
+          n, total_flops / 1e9, peak);
+    printf("version           ms     GFLOP/s   %% peak  %% cuBLAS   max rel err  failures\n");
 
     for (int v = 0; v < version_count; ++v) {
+        if (n % versions[v].size_multiple != 0) {
+            printf("%-14s   skipped, needs n divisible by %d\n",
+                  versions[v].name, versions[v].size_multiple);
+            continue;
+        }
+
         CUDA_CHECK(cudaMemset(d_c, 0, bytes));
         versions[v].launch(n, d_a, d_b, d_c);
         CUDA_CHECK_LAUNCH();
@@ -91,12 +99,21 @@ int main(int argc, char **argv)
             warmup_iterations, timed_iterations);
 
         const double gflops = total_flops / (timing.mean_ms / 1e3) / 1e9;
+        if (strcmp(versions[v].name, "cublas") == 0) {
+            cublas_gflops = gflops;
+        }
 
-        printf("%-12s %8.3f  %9.1f  %6.2f%%  %12.2e  %9d\n",
-               versions[v].name, timing.mean_ms, gflops,
-               100.0 * gflops / peak, check.max_relative_error, check.failures);
+        printf("%-14s %7.3f  %10.1f  %6.2f%%", versions[v].name, timing.mean_ms,
+              gflops, 100.0 * gflops / peak);
+        if (cublas_gflops > 0.0) {
+            printf("  %7.1f%%", 100.0 * gflops / cublas_gflops);
+        } else {
+            printf("        --");
+        }
+        printf("  %12.2e  %8d\n", check.max_relative_error, check.failures);
     }
 
+    cublas_shutdown();
     CUDA_CHECK(cudaFree(d_a));
     CUDA_CHECK(cudaFree(d_b));
     CUDA_CHECK(cudaFree(d_c));
