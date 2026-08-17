@@ -10,6 +10,7 @@ static const SgemmVersion versions[] = {
     {"v4_1d_tiling", launch_sgemm_v4, 1},
     {"v5_2d_tiling", launch_sgemm_v5, 1},
     {"v6_vectorized", launch_sgemm_v6, 4},
+    {"v7_no_conflicts", launch_sgemm_v7, 4},
     {"cublas", launch_cublas_sgemm, 1},
 };
 

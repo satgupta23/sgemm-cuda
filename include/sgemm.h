@@ -16,6 +16,7 @@ void launch_sgemm_v3(int n, const float *d_a, const float *d_b, float *d_c);
 void launch_sgemm_v4(int n, const float *d_a, const float *d_b, float *d_c);
 void launch_sgemm_v5(int n, const float *d_a, const float *d_b, float *d_c);
 void launch_sgemm_v6(int n, const float *d_a, const float *d_b, float *d_c);
+void launch_sgemm_v7(int n, const float *d_a, const float *d_b, float *d_c);
 
 void cublas_init(void);
 void cublas_shutdown(void);
