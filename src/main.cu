@@ -6,6 +6,9 @@
 static const SgemmVersion versions[] = {
     {"v1_naive", launch_sgemm_v1}, 
     {"v2_coalesced", launch_sgemm_v2},
+    {"v3_shared", launch_sgemm_v3},
+    {"v4_ld_tiling", launch_sgemm_v4},
+    {"v5_2d_tiling", launch_sgemm_v5},
 };
 
 static const int version_count = (int)(sizeof(versions) / sizeof(versions[0]));

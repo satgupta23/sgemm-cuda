@@ -1,0 +1,32 @@
+n 512, 0.268 GFLOP per multiply, peak 9032 GFLOP/s
+
+version         ms     GFLOP/s   % peak   max rel err   failures
+v1_naive        4.130       65.0    0.72%      9.56e-07          0
+v2_coalesced    0.518      518.5    5.74%      9.56e-07          0
+v3_shared       0.416      645.3    7.14%      9.56e-07          0
+v4_ld_tiling    0.198     1353.5   14.99%      9.56e-07          0
+v5_2d_tiling    0.182     1474.7   16.33%      9.56e-07          0
+n 1024, 2.147 GFLOP per multiply, peak 9032 GFLOP/s
+
+version         ms     GFLOP/s   % peak   max rel err   failures
+v1_naive       24.061       89.3    0.99%      1.25e-06          0
+v2_coalesced    2.827      759.8    8.41%      1.25e-06          0
+v3_shared       2.220      967.5   10.71%      1.25e-06          0
+v4_ld_tiling    0.900     2385.2   26.41%      1.25e-06          0
+v5_2d_tiling    0.680     3158.1   34.97%      1.25e-06          0
+n 2048, 17.180 GFLOP per multiply, peak 9032 GFLOP/s
+
+version         ms     GFLOP/s   % peak   max rel err   failures
+v1_naive      183.793       93.5    1.03%      2.37e-06          0
+v2_coalesced   22.265      771.6    8.54%      2.37e-06          0
+v3_shared      17.536      979.7   10.85%      2.37e-06          0
+v4_ld_tiling    6.881     2496.8   27.64%      2.37e-06          0
+v5_2d_tiling    4.749     3617.4   40.05%      2.37e-06          0
+n 4096, 137.439 GFLOP per multiply, peak 9032 GFLOP/s
+
+version         ms     GFLOP/s   % peak   max rel err   failures
+v1_naive     1464.983       93.8    1.04%      2.92e-06          0
+v2_coalesced  192.022      715.7    7.92%      2.92e-06          0
+v3_shared     149.581      918.8   10.17%      2.92e-06          0
+v4_ld_tiling   58.812     2336.9   25.87%      2.92e-06          0
+v5_2d_tiling   44.336     3100.0   34.32%      2.92e-06          0
